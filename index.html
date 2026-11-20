@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#dff4ff">
+<title>でんしゃ はかせ！｜しゃしんクイズとずかん</title>
+<style>
+:root{--ink:#263650;--blue:#2e72c9;--sky:#dff4ff;--yellow:#ffd560;--orange:#fcb26e;--green:#36b888;--red:#ee6f79;--line:#dce9f3;--paper:#fffdfa;--round:28px}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font-family:"Hiragino Maru Gothic ProN","Hiragino Kaku Gothic ProN","Yu Gothic",Meiryo,system-ui,sans-serif;background:radial-gradient(circle at 10% 2%,#fff3bc 0 12%,transparent 35%),radial-gradient(circle at 95% 16%,#e2f9de 0 8%,transparent 30%),linear-gradient(150deg,#dcf2ff,#fff7e6 78%);min-height:100vh}
+button{font:inherit;cursor:pointer;touch-action:manipulation}
+a{color:#1c60ad}
+.app{width:min(100%,920px);margin:0 auto;padding:14px 14px 38px}
+header{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:6px 3px 16px;flex-wrap:wrap}
+.brand{font-size:clamp(19px,4vw,29px);font-weight:1000;letter-spacing:.01em;white-space:nowrap}
+.head-actions{display:flex;gap:8px;align-items:center}
+.pill{padding:9px 11px;border-radius:999px;background:white;box-shadow:0 3px 0 #d2e6ee;font-size:13px;font-weight:900;white-space:nowrap}
+.iconbtn{border:0;border-radius:999px;background:#fff;padding:10px 13px;box-shadow:0 3px 0 #cbdfea;font-weight:900;color:var(--ink)}
+.panel{background:rgba(255,255,255,.98);border-radius:var(--round);padding:clamp(17px,3vw,33px);box-shadow:0 9px 0 #c4dce97a,0 14px 30px #8cb1c41a;border:2px solid #fff}
+.hidden{display:none!important}
+h1,h2,p{margin-top:0}
+h1{font-size:clamp(30px,6.5vw,46px);line-height:1.24;margin-bottom:12px}
+h2{font-size:clamp(22px,4vw,30px);margin-bottom:8px}
+p{line-height:1.7}
+.center{text-align:center}
+.kicker{display:inline-flex;align-items:center;background:#eaf6ff;border:2px solid #b8dbfa;color:#2060ab;border-radius:30px;padding:5px 15px;font-size:14px;font-weight:900;margin-bottom:12px}
+.scene{position:relative;height:145px;border-radius:24px;background:linear-gradient(#d0eeff 0 67%,#d9f4dc 67%);margin:0 auto 22px;overflow:hidden;max-width:700px}
+.scene:before,.scene:after{content:"";position:absolute;left:0;right:0;height:3px;background:#667887;bottom:20px;box-shadow:0 16px 0 #667887}
+.scene:after{height:10px;bottom:11px;background:repeating-linear-gradient(90deg,#6a8594 0 8px,transparent 8px 30px);box-shadow:none}
+.scene .sun{position:absolute;right:45px;top:22px;font-size:34px}
+.scene .train{position:absolute;left:12%;bottom:16px;font-size:clamp(64px,15vw,103px);filter:drop-shadow(2px 4px 1px #0002)}
+.scene .cloud{position:absolute;top:20px;left:22%;font-size:30px}
+.intro{font-size:clamp(17px,3vw,21px);font-weight:800;margin-bottom:15px}
+.primary{border:0;border-radius:19px;padding:16px 27px;background:var(--yellow);color:#44320a;font-weight:1000;font-size:clamp(18px,3.6vw,23px);box-shadow:0 5px 0 #dfad33;min-height:58px}
+.primary:active,.choice:active{transform:translateY(3px);box-shadow:0 1px 0 #c8d5e0}
+.primary:disabled{opacity:.6;cursor:wait}
+.secondary{border:2px solid #c8e1f4;border-radius:17px;background:#eef8ff;color:#245d98;padding:12px 19px;font-weight:900;min-height:48px}
+.subactions{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:15px}
+.note{font-size:13px;color:#627389;line-height:1.7}
+.status{margin:16px auto 0;max-width:580px;background:#f8fbff;border-radius:18px;padding:11px 15px;text-align:left;font-weight:800;font-size:14px}
+.status.warning{background:#fff0ee;color:#9b3434}
+.status.good{background:#e8faef;color:#1d7651}
+.statsline{display:flex;align-items:center;justify-content:space-between;font-weight:1000;gap:8px;margin-bottom:11px;flex-wrap:wrap}
+.progress{height:13px;border-radius:50px;overflow:hidden;background:#e4ebf2}
+.progress>div{height:100%;width:0%;background:linear-gradient(90deg,#48c6a4,#2b9fc1);transition:width .24s}
+.progress-yellow>div{background:linear-gradient(90deg,#ffd260,#ffad58)}
+.quiz-info{font-weight:900;font-size:14px;color:#59718c;margin:8px 0 0}
+.photo-frame{margin:15px auto 9px;display:flex;align-items:center;justify-content:center;position:relative;height:clamp(190px,49vw,355px);border-radius:22px;background:linear-gradient(160deg,#edf8fe,#e7edf8);border:3px solid #e3f1fc;overflow:hidden}
+.photo-frame img{width:100%;height:100%;object-fit:contain;display:block}
+.photo-badge{position:absolute;top:10px;left:11px;background:#fffdfaeb;border-radius:999px;padding:5px 11px;font-size:12px;font-weight:900}
+.creditline{min-height:20px;font-size:11px;color:#6b7890;overflow-wrap:anywhere;text-align:left;line-height:1.5}
+.question{font-size:clamp(21px,4.4vw,29px);font-weight:1000;margin:17px auto 14px;text-align:center}
+.choices{display:grid;grid-template-columns:1fr;gap:11px}
+.choice{display:flex;align-items:center;gap:11px;text-align:left;background:#f4faff;border:3px solid #d8eafa;color:#263650;border-radius:19px;padding:13px 15px;min-height:68px;font-weight:1000;font-size:clamp(16px,2.8vw,21px);box-shadow:0 4px 0 #d6e4ed}
+.choice .num{width:33px;height:33px;flex:0 0 33px;border-radius:11px;background:#dbeefc;display:inline-grid;place-items:center;color:#3265a2;font-weight:1000}
+.choice .choice-label{min-width:0;overflow-wrap:anywhere}
+.choice:disabled{cursor:default;opacity:1}
+.choice.correct{background:#ddf8e9;border-color:#2eb57b;box-shadow:0 4px 0 #afdcc5}
+.choice.correct .num{background:#c1edcf;color:#187247}
+.choice.wrong{background:#fff0f0;border-color:#ee7379;box-shadow:0 4px 0 #f5c0c4}
+.choice.wrong .num{background:#ffd9dc;color:#b33b46}
+.feedback{font-size:clamp(19px,3.8vw,26px);font-weight:1000;min-height:44px;margin:17px auto 8px;text-align:center}
+.feedback small{display:block;font-size:15px;font-weight:800;margin-top:5px}
+.nextline{display:flex;gap:10px;align-items:center;justify-content:center;margin-top:6px}
+.result-icon{font-size:71px;line-height:1.3;margin:7px 0}
+.result-number{font-size:clamp(24px,5vw,36px);font-weight:1000;margin:8px 0}
+.result-star{font-size:20px;font-weight:1000;color:#ce7a1c}
+.collection-area{margin-top:24px;text-align:left;border-top:3px dashed #dce9ee;padding-top:22px}
+.collection-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:7px;margin-bottom:6px}
+.collection-head h2{margin:0}
+.filter-row{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0 16px}
+.filter{background:#f2f7fc;border:2px solid #dce8f2;border-radius:999px;padding:8px 15px;font-size:13px;font-weight:900;color:#475c72}
+.filter[aria-pressed=true]{background:#d8edff;border-color:#4699e6;color:#195da3}
+.collection{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.train-card{border:2px solid #e3e9ef;border-radius:18px;background:#fcfeff;padding:10px;overflow:hidden;min-width:0}
+.train-card.locked{background:#f6f8fa;border-style:dashed;color:#8694a3}
+.card-photo{display:flex;align-items:center;justify-content:center;height:110px;background:#ecf5fc;border-radius:11px;overflow:hidden;margin-bottom:8px}
+.card-photo img{display:block;width:100%;height:100%;object-fit:contain}
+.card-locked{font-size:43px;filter:grayscale(1);opacity:.32}
+.card-id{font-weight:900;font-size:12px;color:#668099}
+.card-name{font-size:14px;font-weight:1000;overflow-wrap:anywhere;line-height:1.5;margin:3px 0}
+.card-credit{font-size:11px;color:#68768a;line-height:1.5;overflow-wrap:anywhere}
+.card-credit a{display:inline-block;margin-top:3px}
+.empty{padding:28px 10px;text-align:center;background:#f6faff;border-radius:18px;color:#66788e;font-weight:900}
+.footer{text-align:center;color:#6d8493;font-size:12px;margin:22px auto 0;line-height:1.7}
+@media(min-width:650px){.choices{grid-template-columns:repeat(3,minmax(0,1fr))}.choice{flex-direction:column;align-items:flex-start;min-height:125px;gap:10px}.collection{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.card-photo{height:130px}}
+@media(min-width:840px){.collection{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+/* こえで しつもん → しゃしんを 3まいから えらぶ */
+.quiz-instruction{text-align:center;font-weight:800;color:#5b708b;margin:-2px 0 14px;font-size:14px}
+.listenline{text-align:center;margin:-4px 0 13px}
+.choices.photo-choices{grid-template-columns:1fr;gap:12px}
+.choices.photo-choices .choice{display:grid;grid-template-columns:42px minmax(0,1fr);grid-template-areas:"number picture" "name name";align-items:center;gap:8px;padding:9px;min-height:128px;text-align:center}
+.choices.photo-choices .num{grid-area:number;align-self:center;justify-self:center;font-size:21px;width:38px;height:38px;flex-basis:38px}
+.choices.photo-choices .choice-image{grid-area:picture;display:flex;align-items:center;justify-content:center;width:100%;height:118px;min-width:0;border-radius:11px;background:#fff;overflow:hidden}
+.choices.photo-choices .choice-image img{display:block;width:100%;height:100%;object-fit:contain}
+.choices.photo-choices .choice-name{display:none;grid-area:name;font-weight:1000;line-height:1.45;font-size:clamp(13px,2.2vw,17px);overflow-wrap:anywhere}
+.choices.photo-choices .choice.revealed .choice-name{display:block}
+.choices.photo-choices .choice.correct .choice-name{color:#187247}
+.creditline{margin:10px 0 12px;font-size:11px;line-height:1.7}
+.creditline .credit-entry{padding:4px 0;border-top:1px dashed #dde7f0}
+@media(min-width:600px){
+  .choices.photo-choices{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+  .choices.photo-choices .choice{display:flex;flex-direction:column;align-items:stretch;min-height:194px;gap:9px;padding:10px}
+  .choices.photo-choices .num{align-self:flex-start;flex:0 0 38px}
+  .choices.photo-choices .choice-image{height:clamp(122px,18vw,185px)}
+  .choices.photo-choices .choice-name{font-size:clamp(13px,1.8vw,17px)}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div class="brand">🚃 でんしゃ はかせ！</div>
+  <div class="head-actions"><span class="pill" id="headerProgress">📚 0 / 150</span><button type="button" class="iconbtn" id="voiceToggle" aria-pressed="true">🔊 こえ ON</button></div>
+</header>
+<main>
+<section class="panel center" id="startScreen">
+  <div class="scene" aria-hidden="true"><span class="cloud">☁️</span><span class="sun">☀️</span><span class="train">🚄</span></div>
+  <span class="kicker">しゃしんで あそぼう！</span>
+  <h1>でんしゃ<br>しゃりょうクイズ</h1>
+  <p class="intro">でんしゃの なまえを きいて、<br>3まいの しゃしんから えらんでね！<br>10もん ずつ チャレンジ 🌟</p>
+  <button type="button" class="primary" id="startBtn">🚆 クイズ スタート！</button>
+  <div class="subactions"><button type="button" class="secondary" id="chooseFolderBtn">📁 しゃしんフォルダを えらぶ</button></div>
+  <input id="folderInput" type="file" webkitdirectory directory multiple accept="image/jpeg,.jpg,.jpeg" class="hidden">
+  <p class="note" style="margin:12px auto 0">「images」フォルダの しゃしんは じどうで つかえます。<br>べつの ばしょに あるときは、フォルダを えらんでください。</p>
+  <div id="assetStatus" class="status" role="status">📷 しゃしんリスト：150しゅるい</div>
+  <div style="max-width:460px;margin:20px auto 0;text-align:left">
+    <div class="statsline"><span>📚 ずかんの あつまりぐあい</span><span id="startTotal">0 / 150</span></div>
+    <div class="progress progress-yellow"><div id="startBar"></div></div>
+  </div>
+</section>
+<section class="panel hidden" id="quizScreen">
+  <div class="statsline"><span id="levelText">レベル 1・かんたん</span><span id="questionCount">1 / 10</span><span id="quizScore">⭐ 0</span></div>
+  <div class="progress"><div id="quizBar"></div></div>
+  <p class="question" id="questionText">どの でんしゃ かな？</p>
+  <div class="listenline"><button type="button" class="secondary" id="replayBtn">🔊 もんだいを きく</button></div>
+  <p class="quiz-instruction">しゃしんを 1まい えらんでね！</p>
+  <div class="choices photo-choices" id="choices" role="group" aria-label="しゃしんの さんたく"></div>
+  <div id="feedback" class="feedback" aria-live="polite"></div>
+  <div class="creditline hidden" id="questionCredit"></div>
+  <div class="nextline"><button type="button" class="primary hidden" id="nextBtn">つぎの もんだい ➜</button></div>
+</section>
+<section class="panel center hidden" id="resultScreen">
+  <div class="result-icon" id="resultIcon">🏆</div>
+  <h1>クイズ おしまい！</h1>
+  <div id="resultScore" class="result-number">10もんちゅう 0もん せいかい！</div>
+  <div class="result-star" id="resultRank"></div>
+  <p id="unlockedThisRound" style="margin:14px 0 5px;font-weight:900"></p>
+  <div class="subactions"><button type="button" class="primary" id="againBtn">🚆 もういちど！</button><button type="button" class="secondary" id="goCollectionBtn">📚 ずかんを みる</button></div>
+  <section class="collection-area" id="collectionArea" aria-label="でんしゃずかん">
+    <div class="collection-head"><h2>📚 でんしゃ ずかん</h2><b id="collectionTotal">0 / 150</b></div>
+    <p class="note">せいかいした でんしゃが ずかんに のこるよ！<br>あつめた でんしゃは、つぎに あそぶときも きえません。</p>
+    <div class="progress progress-yellow"><div id="collectionBar"></div></div>
+    <div class="filter-row" role="group" aria-label="ずかんの表示">
+       <button type="button" class="filter" data-filter="all" aria-pressed="true">ぜんぶ</button>
+       <button type="button" class="filter" data-filter="owned" aria-pressed="false">あつめた</button>
+       <button type="button" class="filter" data-filter="locked" aria-pressed="false">まだ</button>
+    </div>
+    <div class="collection" id="collection"></div>
+    <div class="subactions"><button type="button" class="secondary" id="resetBtn">🗑️ ずかんを はじめからに する</button></div>
+  </section>
+</section>
+</main>
+<div class="footer">しゃしん：Wikimedia Commons など ／ しゃしんの しゅってん・クレジットは こたえあわせと ずかんで かくにんできます。<br>しゃしんの りようじょうけんが みかくにんの ものは、こうかいまえに かくにんが ひつようです。</div>
+</div>
+<script>
+"use strict";
+const TRAINS = [{"id":"T001","name":"E5系（はやぶさ）","group":"新幹線","file":"Shinkansen_Series_E5.jpg","author":"Lodaï","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:Shinkansen_Series_E5.jpg"},{"id":"T002","name":"H5系（はやぶさ）","group":"新幹線","file":"H5系_H2編成_盛岡駅入線.jpg","author":"","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:H5%E7%B3%BB_H2%E7%B7%A8%E6%88%90_%E7%9B%9B%E5%B2%A1%E9%A7%85%E5%85%A5%E7%B7%9A.JPG"},{"id":"T003","name":"E6系（こまち）","group":"新幹線","file":"Akita_Shinkansen_-_E6_series.jpg","author":"Jerôme Laborde","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","source":"https://commons.wikimedia.org/wiki/File:Akita_Shinkansen_-_E6_series.jpg"},{"id":"T004","name":"E7系（かがやき）","group":"新幹線","file":"Jōetsu_Shinkansen_E7_Series_Shinkansen_20191121_1.jpg","author":"国立寺","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:J%C5%8Detsu_Shinkansen_E7_Series_Shinkansen_20191121_1.jpg"},{"id":"T005","name":"W7系（かがやき）","group":"新幹線","file":"Series-W7-W6.jpg","author":"","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:Series-W7-W6.jpg"},{"id":"T006","name":"E8系（つばさ）","group":"新幹線","file":"E8系.jpg","author":"営団総裁","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:E8%E7%B3%BB.jpg"},{"id":"T007","name":"E3系（つばさ）","group":"新幹線","file":"E3_series_Shinkansen_in_Tokyo_Station.jpg","author":"","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:E3_series_Shinkansen_in_Tokyo_Station.jpg"},{"id":"T008","name":"E2系（やまびこ）","group":"新幹線","file":"E2_series_Shinkansen_train_at_Tokyo_Station.jpg","author":"っ","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","source":"https://commons.wikimedia.org/wiki/File:E2_series_Shinkansen_train_at_Tokyo_Station.jpg"},{"id":"T009","name":"E4系（Max）","group":"新幹線","file":"Shinkansen_E4series_(4467135007).jpg","author":"","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","source":"https://commons.wikimedia.org/wiki/File:Shinkansen_E4series_(4467135007).jpg"},{"id":"T010","name":"E1系（Max）","group":"新幹線","file":"E1_Shinkansen.jpg","author":"","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","source":"https://commons.wikimedia.org/wiki/File:E1_Shinkansen.JPG"},{"id":"T011","name":"200系","group":"新幹線","file":"Shinkansen200.jpg","author":"","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","source":"https://commons.wikimedia.org/wiki/File:Shinkansen200.jpg"},{"id":"T013","name":"0系","group":"新幹線","file":"0_series_shinkansen.jpg","author":"","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","source":"https://commons.wikimedia.org/wiki/File:0_series_shinkansen.jpg"},{"id":"T014","name":"100系","group":"新幹線","file":"JR_Central_Shinkansen_100kei.jpg","author":"spaceaero2","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","source":"https://commons.wikimedia.org/wiki/File:JR_Central_Shinkansen_100kei.jpg"},{"id":"T015","name":"300系","group":"新幹線","file":"300_series_Shinkansen_train_at_Tokyo_Station.jpg","author":"","license":"CC BY-SA 2.1 JP","licenseUrl":"https://creativecommons.org/licenses/by-sa/2.1/jp/","source":"https://commons.wikimedia.org/wiki/File:300_series_Shinkansen_train_at_Tokyo_Station.jpg"},{"id":"T016","name":"500系","group":"新幹線","file":"500_series_Shinkansen_W1_train_set_at_Tokyo_Station_20080105.jpg","author":"","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:500_series_Shinkansen_W1_train_set_at_Tokyo_Station_20080105.jpg"},{"id":"T017","name":"700系","group":"新幹線","file":"700_series_Shinkansen_B15_train_set_at_Tokyo_Station_20080105.jpg","author":"","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:700_series_Shinkansen_B15_train_set_at_Tokyo_Station_20080105.jpg"},{"id":"T018","name":"N700系","group":"新幹線","file":"Shinkansen_N700.jpg","author":"","license":"CC BY 4.0","licenseUrl":"https://creativecommons.org/licenses/by/4.0/","source":"https://commons.wikimedia.org/wiki/File:Shinkansen_N700.jpg"},{"id":"T020","name":"N700S","group":"新幹線","file":"N700S-J1 (1).jpg","author":"","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:N700S-J1.jpg"},{"id":"T021","name":"800系（つばめ）","group":"新幹線","file":"Series800_U001.jpg","author":"MaedaAkihiko","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:Series800_U001.jpg"},{"id":"T022","name":"923形（ドクターイエロー）","group":"新幹線","file":"Type923-T4.jpg","author":"MaedaAkihiko","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:Type923-T4.jpg"},{"id":"T023","name":"922形（ドクターイエロー）","group":"新幹線","file":"Doctor-yellow.jpg","author":"Taisyo","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","source":"https://commons.wikimedia.org/wiki/File:Doctor-yellow.jpg"},{"id":"T024","name":"E926形（East i）","group":"新幹線","file":"Shinkansen_E926_East-i.jpg","author":"","license":"CC BY-SA 2.5","licenseUrl":"https://creativecommons.org/licenses/by-sa/2.5/","source":"https://commons.wikimedia.org/wiki/File:Shinkansen_E926_East-i.jpg"},{"id":"T025","name":"L0系（リニア）","group":"新幹線","file":"Series_L0.jpg","author":"","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","source":"https://commons.wikimedia.org/wiki/File:Series_L0.JPG"},{"id":"T026","name":"E353系（あずさ・かいじ）","group":"JR特急・観光列車","file":"Akihabara---2023-12-09_05.jpg","author":"RuinDig/Yuki Uchida","license":"CC BY 4.0","licenseUrl":"https://creativecommons.org/licenses/by/4.0/","source":"https://commons.wikimedia.org/wiki/File:Akihabara---2023-12-09_05.jpg"},{"id":"T027","name":"E259系（成田エクスプレス）","group":"JR特急・観光列車","file":"JR東日本E259系.jpg","author":"保科敏","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:JR%E6%9D%B1%E6%97%A5%E6%9C%ACE259%E7%B3%BB.jpg"},{"id":"T028","name":"E261系（サフィール踊り子）","group":"JR特急・観光列車","file":"JRE_Series-E261-RS1_Ito-line.jpg","author":"MaedaAkihiko","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:JRE_Series-E261-RS1_Ito-line.jpg"},{"id":"T029","name":"E257系（踊り子）","group":"JR特急・観光列車","file":"Series-E257-2000-Odoriko.jpg","author":"","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:Series-E257-2000-Odoriko.jpg"},{"id":"T030","name":"E657系（ひたち）","group":"JR特急・観光列車","file":"2022-01-08_JR_East_E657.jpg","author":"","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","source":"https://commons.wikimedia.org/wiki/File:2022-01-08_JR_East_E657.jpg"},{"id":"T031","name":"E653系（いなほ）","group":"JR特急・観光列車","file":"E653_K71.jpg","author":"","license":"CC BY 4.0","licenseUrl":"https://creativecommons.org/licenses/by/4.0/","source":"https://commons.wikimedia.org/wiki/File:E653_K71.jpg"},{"id":"T032","name":"E751系（つがる）","group":"JR特急・観光列車","file":"JRE_Series-E751_Tsugaru.jpg","author":"","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:JRE_Series-E751_Tsugaru.jpg"},{"id":"T033","name":"E655系（なごみ）","group":"JR特急・観光列車","file":"JR-Series-E655.jpg","author":"","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:JR-Series-E655.jpg"},{"id":"T035","name":"253系（成田エクスプレス旧型）","group":"JR特急・観光列車","file":"253_series_20080601.jpg","author":"","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","source":"https://commons.wikimedia.org/wiki/File:253_series_20080601.jpg"},{"id":"T036","name":"255系（房総特急）","group":"JR特急・観光列車","file":"Wakashio_255.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Wakashio_255.jpg"},{"id":"T037","name":"251系（スーパービュー踊り子）","group":"JR特急・観光列車","file":"JR_East_251_Series__Super_View_Odoriko_.jpg","author":"T. Hanami","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","source":"https://commons.wikimedia.org/wiki/File:JR_East_251_Series_%22Super_View_Odoriko%22.jpg"},{"id":"T038","name":"185系（踊り子旧型）","group":"JR特急・観光列車","file":"Series185-OM08_Tokaido-Line.jpg","author":"","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:Series185-OM08_Tokaido-Line.jpg"},{"id":"T039","name":"651系（スーパーひたち）","group":"JR特急・観光列車","file":"651_super_hitachi.jpg","author":"","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","source":"https://commons.wikimedia.org/wiki/File:651_super_hitachi.jpg"},{"id":"T040","name":"E351系（スーパーあずさ）","group":"JR特急・観光列車","file":"JR_east_E351.jpg","author":"","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","source":"https://commons.wikimedia.org/wiki/File:JR_east_E351.jpg"},{"id":"T041","name":"383系（しなの）","group":"JR特急・観光列車","file":"JRC_Series383-A7_Shinano-1.jpg","author":"","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","source":"https://commons.wikimedia.org/wiki/File:JRC_Series383-A7_Shinano-1.jpg"},{"id":"T042","name":"385系（しなの）","group":"JR特急・観光列車","file":"JR東海_385系.jpg","author":"ひろばのさるの","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","source":"https://commons.wikimedia.org/wiki/File:JR%E6%9D%B1%E6%B5%B7_385%E7%B3%BB.jpg"},{"id":"T043","name":"HC85系（ひだ）","group":"JR特急・観光列車","file":"JRC_HC85-D106_Hida-25.jpg","author":"MaedaAkihiko","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","source":"https://commons.wikimedia.org/wiki/File:JRC_HC85-D106_Hida-25.jpg"},{"id":"T044","name":"キハ85系（ひだ）","group":"JR特急・観光列車","file":"JRT_DC_kiha85series_Limited-Express_Hida.jpg","author":"","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","source":"https://commons.wikimedia.org/wiki/File:JRT_DC_kiha85series_Limited-Express_Hida.jpg"},{"id":"T045","name":"681系（サンダーバード）","group":"JR特急・観光列車","file":"A_JR_West_681_Series_on_a_“Thunderbird”_Limited_Express_Service.jpg","author":"","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:A_JR_West_681_Series_on_a_%E2%80%9CThunderbird%E2%80%9D_Limited_Express_Service.jpg"},{"id":"T046","name":"683系（サンダーバード）","group":"JR特急・観光列車","file":"JR-WEST_683_series_Thunderbird_between_Naka-Tsubata_and_Hon-Tsubata.jpg","author":"","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:JR-WEST_683_series_Thunderbird_between_Naka-Tsubata_and_Hon-Tsubata.jpg"},{"id":"T047","name":"287系（くろしお）","group":"JR特急・観光列車","file":"JRW_series287_Kinokuni.jpg","author":"W0746203-1","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","source":"https://commons.wikimedia.org/wiki/File:JRW_series287_Kinokuni.jpg"},{"id":"T048","name":"283系（オーシャンアロー）","group":"JR特急・観光列車","file":"283系オーシャンアロー.jpg","author":"","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:283%E7%B3%BB%E3%82%AA%E3%83%BC%E3%82%B7%E3%83%A3%E3%83%B3%E3%82%A2%E3%83%AD%E3%83%BC.jpg"},{"id":"T049","name":"271系（はるか）","group":"JR特急・観光列車","file":"JRW_Series271-HA655.jpg","author":"","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","source":"https://commons.wikimedia.org/wiki/File:JRW_Series271-HA655.jpg"},{"id":"T050","name":"281系（はるか）","group":"JR特急・観光列車","file":"Series281_Hanwa_Line.jpg","author":"","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:Series281_Hanwa_Line.jpg"},{"id":"T051","name":"273系（やくも）","group":"JR特急・観光列車","file":"JRW_Series273-Y10.jpg","author":"","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","source":"https://commons.wikimedia.org/wiki/File:JRW_Series273-Y10.jpg"},{"id":"T052","name":"381系（やくも旧型）","group":"JR特急・観光列車","file":"381_series_yakumo_jnr_livery.jpg","author":"","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","source":"https://commons.wikimedia.org/wiki/File:381_series_yakumo_jnr_livery.jpg"},{"id":"T053","name":"8600系（しおかぜ）","group":"JR特急・観光列車","file":"JR四国8600_しおかぜ_Shiokaze_備中箕島-妹尾_(20261108).jpg","author":"Takeshi Aida","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:JR%E5%9B%9B%E5%9B%BD8600_%E3%81%97%E3%81%8A%E3%81%8B%E3%81%9C_Shiokaze_%E5%82%99%E4%B8%AD%E7%AE%95%E5%B3%B6-%E5%A6%B9%E5%B0%BE_(20261108).jpg"},{"id":"T054","name":"8000系（しおかぜ）","group":"JR特急・観光列車","file":"JRS_Series8000_Shiokaze-4.jpg","author":"MaedaAkihiko","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:JRS_Series8000_Shiokaze-4.jpg"},{"id":"T055","name":"787系（リレーかもめ）","group":"JR特急・観光列車","file":"Series787-BM6_Relay-Kamome-12.jpg","author":"MaedaAkihiko","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:Series787-BM6_Relay-Kamome-12.jpg"},{"id":"T056","name":"883系（ソニック）","group":"JR特急・観光列車","file":"Series883-AO18.jpg","author":"MaedaAkihiko","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:Series883-AO18.jpg"},{"id":"T057","name":"885系（ソニック）","group":"JR特急・観光列車","file":"JR-K_885-01.jpg","author":"","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","source":"https://commons.wikimedia.org/wiki/File:JR-K_885-01.jpg"},{"id":"T058","name":"キハ72系（ゆふいんの森）","group":"JR特急・観光列車","file":"JRK_Kiha72_Yufuin-no-mori.jpg","author":"MaedaAkihiko","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:JRK_Kiha72_Yufuin-no-mori.jpg"},{"id":"T059","name":"キハ71系（ゆふいんの森）","group":"JR特急・観光列車","file":"JR_Kyushu_Kiha_71_Series_DMU_Yufuin-no-mori.jpg","author":"G43","license":"CC BY 3.0","licenseUrl":"https://creativecommons.org/licenses/by/3.0/","source":"https://commons.wikimedia.org/wiki/File:JR_Kyushu_Kiha_71_Series_DMU_Yufuin-no-mori.jpg"},{"id":"T060","name":"36ぷらす3","group":"JR特急・観光列車","file":"36plus3_oita_station.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:36plus3_oita_station.jpg"},{"id":"T061","name":"ななつ星in九州","group":"JR特急・観光列車","file":"Cruise_train__Seven_Stars_in_Kyushu__stopping_at_Hakata_Station.jpg","author":"そらみみ","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:Cruise_train_%22Seven_Stars_in_Kyushu%22_stopping_at_Hakata_Station.jpg"},{"id":"T062","name":"SLやまぐち号","group":"JR特急・観光列車","file":"JR_west_SL_Yamaguchi_C57_1_shimyamaguchi.jpg","author":"","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","source":"https://commons.wikimedia.org/wiki/File:JR_west_SL_Yamaguchi_C57_1_shimyamaguchi.jpg"},{"id":"T063","name":"SLばんえつ物語","group":"JR特急・観光列車","file":"SL_banetsu_monogatari_in_Yamato_Station_Niigata.jpg","author":"","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:SL_banetsu_monogatari_in_Yamato_Station_Niigata.jpg"},{"id":"T064","name":"リゾートしらかみ","group":"JR特急・観光列車","file":"JRE-Gono-line_Yukiaizaki.jpg","author":"MaedaAkihiko","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:JRE-Gono-line_Yukiaizaki.jpg"},{"id":"T065","name":"E235系（山手線）","group":"JR通勤・近郊電車","file":"JRE_E235_series_Yamanote_Line_train.jpg","author":"yagi-s","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","source":"https://commons.wikimedia.org/wiki/File:JRE_E235_series_Yamanote_Line_train.jpg"},{"id":"T066","name":"E235系（横須賀線）","group":"JR通勤・近郊電車","file":"Series-E235-1000_J10.jpg","author":"","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:Series-E235-1000_J10.jpg"},{"id":"T067","name":"E233系（中央線）","group":"JR通勤・近郊電車","file":"SeriesE233_JR-East_chuou.jpg","author":"","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","source":"https://commons.wikimedia.org/wiki/File:SeriesE233_JR-East_chuou.jpg"},{"id":"T068","name":"E233系（京浜東北線）","group":"JR通勤・近郊電車","file":"JRE_Series-E233-1000_164.jpg","author":"","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","source":"https://commons.wikimedia.org/wiki/File:JRE_Series-E233-1000_164.jpg"},{"id":"T069","name":"E233系（京葉線）","group":"JR通勤・近郊電車","file":"JRKeiyo_Line_Series_E233.jpg","author":"","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","source":"https://commons.wikimedia.org/wiki/File:JRKeiyo_Line_Series_E233.JPG"},{"id":"T071","name":"E233系（東海道線）","group":"JR通勤・近郊電車","file":"Tokaido-Line-Series-E233-3000.jpg","author":"","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:Tokaido-Line-Series-E233-3000.jpg"},{"id":"T072","name":"E231系（総武線）","group":"JR通勤・近郊電車","file":"E231-0_Series(For_Chuo-Soubu_Line).jpg","author":"","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:E231-0_Series(For_Chuo-Soubu_Line).jpg"},{"id":"T073","name":"E231系（常磐線）","group":"JR通勤・近郊電車","file":"Narita-Line-Series-E231.jpg","author":"MaedaAkihiko","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:Narita-Line-Series-E231.jpg"},{"id":"T074","name":"E231系（東海道線）","group":"JR通勤・近郊電車","file":"E231-kinkouodawara.jpg","author":"","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","source":"https://commons.wikimedia.org/wiki/File:E231-kinkouodawara.jpg"},{"id":"T075","name":"E217系（横須賀線旧型）","group":"JR通勤・近郊電車","file":"JR_East_E217_Series_Yokosuka_Line_version.jpg","author":"T. Hanami","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","source":"https://commons.wikimedia.org/wiki/File:JR_East_E217_Series_Yokosuka_Line_version.JPG"},{"id":"T076","name":"E531系（常磐線）","group":"JR通勤・近郊電車","file":"JRE_Series-E531_K553.jpg","author":"MaedaAkihiko","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:JRE_Series-E531_K553.jpg"},{"id":"T077","name":"E501系","group":"JR通勤・近郊電車","file":"Jreast_e501.jpg","author":"","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","source":"https://commons.wikimedia.org/wiki/File:Jreast_e501.jpg"},{"id":"T078","name":"E131系","group":"JR通勤・近郊電車","file":"Series-E131-500_G02.jpg","author":"","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:Series-E131-500_G02.jpg"},{"id":"T079","name":"E129系","group":"JR通勤・近郊電車","file":"JRE_Series-E129_A11.jpg","author":"MaedaAkihiko","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:JRE_Series-E129_A11.jpg"},{"id":"T080","name":"E127系","group":"JR通勤・近郊電車","file":"Series-E127-V13.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Series-E127-V13.jpg"},{"id":"T081","name":"209系","group":"JR通勤・近郊電車","file":"Series209-500-Keiyo-Line.jpg","author":"","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:Series209-500-Keiyo-Line.jpg"},{"id":"T082","name":"205系","group":"JR通勤・近郊電車","file":"Series205-0-M64.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Series205-0-M64.jpg"},{"id":"T083","name":"211系","group":"JR通勤・近郊電車","file":"JR_East_211_series_train.jpg","author":"elminium","license":"CC BY 2.0","licenseUrl":"https://creativecommons.org/licenses/by/2.0/","source":"https://commons.wikimedia.org/wiki/File:JR_East_211_series_train.jpg"},{"id":"T084","name":"701系","group":"JR通勤・近郊電車","file":"JR_East_701_Series_Train_at_Koriyama_Station.jpg","author":"Breakover","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","source":"https://commons.wikimedia.org/wiki/File:JR_East_701_Series_Train_at_Koriyama_Station.JPG"},{"id":"T085","name":"E721系","group":"JR通勤・近郊電車","file":"JR_East_E721_Series_for_Ayashi_at_Sendai_Station.jpg","author":"Breakover","license":"Public domain (released by author)","licenseUrl":"https://commons.wikimedia.org/wiki/Commons:Licensing#Public_domain","source":"https://commons.wikimedia.org/wiki/File:JR_East_E721_Series_for_Ayashi_at_Sendai_Station.jpg"},{"id":"T086","name":"EV-E301系（ACCUM）","group":"JR通勤・近郊電車","file":"Series_EV-E301-V1.jpg","author":"","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","source":"https://commons.wikimedia.org/wiki/File:Series_EV-E301-V1.jpg"},{"id":"T087","name":"227系（Red Wing）","group":"JR通勤・近郊電車","file":"JR_West_227_A06_RedWing.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:JR_West_227_A06_RedWing.jpg"},{"id":"T088","name":"225系","group":"JR通勤・近郊電車","file":"JR-Series225-0_U3.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:JR-Series225-0_U3.jpg"},{"id":"T089","name":"223系","group":"JR通勤・近郊電車","file":"Ako-line_Series223-2000.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Ako-line_Series223-2000.jpg"},{"id":"T090","name":"221系","group":"JR通勤・近郊電車","file":"JRW_Series221-K11_Sagano-Line.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:JRW_Series221-K11_Sagano-Line.jpg"},{"id":"T091","name":"321系","group":"JR通勤・近郊電車","file":"JR-West-321-Series-D10-20180218.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:JR-West-321-Series-D10-20180218.jpg"},{"id":"T092","name":"323系（大阪環状線）","group":"JR通勤・近郊電車","file":"Series323-LS21.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Series323-LS21.jpg"},{"id":"T093","name":"207系（JR西日本）","group":"JR通勤・近郊電車","file":"Series-207-2000-T20_(2021-11-17).jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Series-207-2000-T20_(2021-11-17).jpg"},{"id":"T094","name":"813系","group":"JR通勤・近郊電車","file":"Series813-R204.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Series813-R204.jpg"},{"id":"T095","name":"817系","group":"JR通勤・近郊電車","file":"JR_Nippo-Line_Series817-0.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:JR_Nippo-Line_Series817-0.jpg"},{"id":"T096","name":"821系","group":"JR通勤・近郊電車","file":"821系.jpg","author":"KAMOME885","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:821%E7%B3%BB.jpg"},{"id":"T097","name":"小田急70000形（GSE）","group":"私鉄・地下鉄","file":"Odakyu_Series70000_Hakone-7.jpg","author":"","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","source":"https://commons.wikimedia.org/wiki/File:Odakyu_Series70000_Hakone-7.jpg"},{"id":"T098","name":"小田急60000形（MSE）","group":"私鉄・地下鉄","file":"60000_Series_MSE_EMU.jpg","author":"","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:60000_Series_MSE_EMU.jpg"},{"id":"T099","name":"小田急50000形（VSE）","group":"私鉄・地下鉄","file":"Odakyu_Romance_Car_Series_50000.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Odakyu_Romance_Car_Series_50000.jpg"},{"id":"T100","name":"小田急30000形（EXE）","group":"私鉄・地下鉄","file":"Odakyu-EXE-30000.jpg","author":"","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:Odakyu-EXE-30000.jpg"},{"id":"T101","name":"小田急8000形","group":"私鉄・地下鉄","file":"ODAKYU_8000.jpg","author":"Inahohara315","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:ODAKYU_8000.jpg"},{"id":"T102","name":"小田急5000形","group":"私鉄・地下鉄","file":"OER-Series5000-5055_Tama-line.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:OER-Series5000-5055_Tama-line.jpg"},{"id":"T103","name":"京急1000形","group":"私鉄・地下鉄","file":"Keikyu-Type1000-360.jpg","author":"MaedaAkihiko","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","source":"https://commons.wikimedia.org/wiki/File:Keikyu-Type1000-360.jpg"},{"id":"T104","name":"京急2100形","group":"私鉄・地下鉄","file":"Keikyu-Type2100-17.jpg","author":"MaedaAkihiko","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","source":"https://commons.wikimedia.org/wiki/File:Keikyu-Type2100-17.jpg"},{"id":"T105","name":"京急600形","group":"私鉄・地下鉄","file":"Keikyu_600_Series_(Blue_Sky_Train).jpg","author":"2100 Keikyu","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:Keikyu_600_Series_(Blue_Sky_Train).jpg"},{"id":"T106","name":"京急1500形","group":"私鉄・地下鉄","file":"Keikyu-Type1500-1528.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Keikyu-Type1500-1528.jpg"},{"id":"T107","name":"京成AE形（スカイライナー）","group":"私鉄・地下鉄","file":"Keisei-Type-AE.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Keisei-Type-AE.jpg"},{"id":"T108","name":"京成3100形","group":"私鉄・地下鉄","file":"Keisei_3100_series.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Keisei_3100_series.jpg"},{"id":"T109","name":"京成3000形","group":"私鉄・地下鉄","file":"Keisei_Series3000-3007.jpg","author":"","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","source":"https://commons.wikimedia.org/wiki/File:Keisei_Series3000-3007.jpg"},{"id":"T110","name":"東急2020系","group":"私鉄・地下鉄","file":"東急田園都市線2020系.jpg","author":"","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:%E6%9D%B1%E6%80%A5%E7%94%B0%E5%9C%92%E9%83%BD%E5%B8%82%E7%B7%9A2020%E7%B3%BB.jpg"},{"id":"T111","name":"東急3020系","group":"私鉄・地下鉄","file":"Tokyu-Series3020-3821.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Tokyu-Series3020-3821.jpg"},{"id":"T112","name":"東急6020系","group":"私鉄・地下鉄","file":"Tokyu_6020_series_Ōimachi_Line_20181228.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Tokyu_6020_series_%C5%8Cimachi_Line_20181228.jpg"},{"id":"T113","name":"東急5050系","group":"私鉄・地下鉄","file":"Tokyu_Railways_5050_Series_5178F_set.jpg","author":"","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","source":"https://commons.wikimedia.org/wiki/File:Tokyu_Railways_5050_Series_5178F_set.jpg"},{"id":"T114","name":"東急5000系","group":"私鉄・地下鉄","file":"Tokyu_Series5000-5818.jpg","author":"MaedaAkihiko","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","source":"https://commons.wikimedia.org/wiki/File:Tokyu_Series5000-5818.jpg"},{"id":"T115","name":"西武001系（ラビュー）","group":"私鉄・地下鉄","file":"Seibu_series001_Laview.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Seibu_series001_Laview.jpg"},{"id":"T116","name":"西武40000系","group":"私鉄・地下鉄","file":"Seibu-Series40000-40003.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Seibu-Series40000-40003.jpg"},{"id":"T117","name":"西武30000系","group":"私鉄・地下鉄","file":"Seibu_Railway_30000.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Seibu_Railway_30000.jpg"},{"id":"T118","name":"西武2000系","group":"私鉄・地下鉄","file":"Seibu_2000N_series_semi-exp.jpg","author":"","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:Seibu_2000N_series_semi-exp.jpg"},{"id":"T119","name":"東武N100系（スペーシアX）","group":"私鉄・地下鉄","file":"Tobu_Series-N100-N101.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Tobu_Series-N100-N101.jpg"},{"id":"T120","name":"東武100系（スペーシア）","group":"私鉄・地下鉄","file":"Spacia_Kinugawa_at_Ikebukuro.jpg","author":"","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:Spacia_Kinugawa_at_Ikebukuro.jpg"},{"id":"T121","name":"東武500系（リバティ）","group":"私鉄・地下鉄","file":"Tobu-Series500_Revaty-Kegon-34.jpg","author":"","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","source":"https://commons.wikimedia.org/wiki/File:Tobu-Series500_Revaty-Kegon-34.jpg"},{"id":"T122","name":"東武70000系","group":"私鉄・地下鉄","file":"Tobu-Series70000-71701.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Tobu-Series70000-71701.jpg"},{"id":"T123","name":"京王5000系","group":"私鉄・地下鉄","file":"Keio-Takao-Line_5000.jpg","author":"MaedaAkihiko","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:Keio-Takao-Line_5000.jpg"},{"id":"T124","name":"京王9000系","group":"私鉄・地下鉄","file":"Keio-Series9000-9701.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Keio-Series9000-9701.jpg"},{"id":"T125","name":"京王8000系","group":"私鉄・地下鉄","file":"Keio-Series8000-8714.jpg","author":"","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:Keio-Series8000-8714.jpg"},{"id":"T126","name":"相鉄12000系","group":"私鉄・地下鉄","file":"相鉄12000系.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:%E7%9B%B8%E9%89%8412000%E7%B3%BB.jpg"},{"id":"T127","name":"相鉄20000系","group":"私鉄・地下鉄","file":"Sagami_railway_20000_series.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Sagami_railway_20000_series.jpg"},{"id":"T128","name":"相鉄21000系","group":"私鉄・地下鉄","file":"Sagami-Railway-21000-21106F.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Sagami-Railway-21000-21106F.jpg"},{"id":"T129","name":"相鉄9000系","group":"私鉄・地下鉄","file":"Sagami-Railway_Series9000R_9703.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Sagami-Railway_Series9000R_9703.jpg"},{"id":"T130","name":"東京メトロ1000系","group":"私鉄・地下鉄","file":"Tokyo_Metro_1000.jpg","author":"スカイライナー","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","source":"https://commons.wikimedia.org/wiki/File:Tokyo_Metro_1000.jpg"},{"id":"T131","name":"東京メトロ2000系","group":"私鉄・地下鉄","file":"Tokyo-Metro-Series2000.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Tokyo-Metro-Series2000.jpg"},{"id":"T132","name":"東京メトロ16000系","group":"私鉄・地下鉄","file":"Tokyo-Metro_Series16000-16025.jpg","author":"","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","source":"https://commons.wikimedia.org/wiki/File:Tokyo-Metro_Series16000-16025.jpg"},{"id":"T133","name":"東京メトロ17000系","group":"私鉄・地下鉄","file":"Tokyo-Metro-Series17000_17105.jpg","author":"MaedaAkihiko","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:Tokyo-Metro-Series17000_17105.jpg"},{"id":"T134","name":"東京メトロ18000系","group":"私鉄・地下鉄","file":"Tokyo-Metro_Series18000-18007.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Tokyo-Metro_Series18000-18007.jpg"},{"id":"T135","name":"東京メトロ13000系","group":"私鉄・地下鉄","file":"Tokyo-Metro-Series13000.jpg","author":"","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:Tokyo-Metro-Series13000.jpg"},{"id":"T136","name":"都営5500形","group":"私鉄・地下鉄","file":"Toei5500.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Toei5500.jpg"},{"id":"T137","name":"都営6500形","group":"私鉄・地下鉄","file":"Toei_Series6500-6505.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Toei_Series6500-6505.jpg"},{"id":"T138","name":"都営12-600形","group":"私鉄・地下鉄","file":"Toei_12-600(Batch_3)_69F.jpg","author":"あたまボーズ","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:Toei_12-600(Batch_3)_69F.jpg"},{"id":"T139","name":"都営10-300形","group":"私鉄・地下鉄","file":"Toei_10-300.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Toei_10-300.jpg"},{"id":"T140","name":"江ノ電300形","group":"地方私鉄・路面電車・モノレール","file":"Enoden_Type_300_001.jpg","author":"","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","source":"https://commons.wikimedia.org/wiki/File:Enoden_Type_300_001.jpg"},{"id":"T141","name":"江ノ電1000形","group":"地方私鉄・路面電車・モノレール","file":"Enoden_1000_series_at_Enoshima_Station_01.jpg","author":"","license":"CC BY 4.0","licenseUrl":"https://creativecommons.org/licenses/by/4.0/","source":"https://commons.wikimedia.org/wiki/File:Enoden_1000_series_at_Enoshima_Station_01.jpg"},{"id":"T142","name":"江ノ電2000形","group":"地方私鉄・路面電車・モノレール","file":"Enoden_2000_series_at_Hase_Station_01.jpg","author":"","license":"CC BY 4.0","licenseUrl":"https://creativecommons.org/licenses/by/4.0/","source":"https://commons.wikimedia.org/wiki/File:Enoden_2000_series_at_Hase_Station_01.jpg"},{"id":"T143","name":"江ノ電500形","group":"地方私鉄・路面電車・モノレール","file":"EnodenT500.jpg","author":"","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","source":"https://commons.wikimedia.org/wiki/File:EnodenT500.jpg"},{"id":"T144","name":"箱根登山鉄道3000形（アレグラ号）","group":"地方私鉄・路面電車・モノレール","file":"Tozan_ALLEGRA_Kowakidani_Sta_20141102.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Tozan_ALLEGRA_Kowakidani_Sta_20141102.jpg"},{"id":"T145","name":"箱根登山鉄道1000形","group":"地方私鉄・路面電車・モノレール","file":"Ohiradai_Station_-_train.jpg","author":"","license":"CC BY-SA 2.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/2.0/","source":"https://commons.wikimedia.org/wiki/File:Ohiradai_Station_-_train.jpg"},{"id":"T146","name":"湘南モノレール5000系","group":"地方私鉄・路面電車・モノレール","file":"Shonan_monorail_type_5000.jpg","author":"にゆうてい","license":"CC BY-SA 2.1 JP","licenseUrl":"https://creativecommons.org/licenses/by-sa/2.1/jp/","source":"https://commons.wikimedia.org/wiki/File:Shonan_monorail_type_5000.JPG"},{"id":"T147","name":"千葉都市モノレール0形","group":"地方私鉄・路面電車・モノレール","file":"Chiba_Urban_Monorail_0_series_201206-01.jpg","author":"PekePON","license":"CC BY-SA 3.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/3.0/","source":"https://commons.wikimedia.org/wiki/File:Chiba_Urban_Monorail_0_series_201206-01.jpg"},{"id":"T148","name":"東京モノレール10000形","group":"地方私鉄・路面電車・モノレール","file":"Tokyo-Monorail-Type10000_Haneda-Airport-Line.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Tokyo-Monorail-Type10000_Haneda-Airport-Line.jpg"},{"id":"T149","name":"ゆりかもめ7500系","group":"地方私鉄・路面電車・モノレール","file":"Yurikamome7500wiki.jpg","author":"","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:Yurikamome7500wiki.jpg"},{"id":"T150","name":"横浜シーサイドライン2000形","group":"地方私鉄・路面電車・モノレール","file":"Yokohama-New-Transit_Series2000-36.jpg","author":"","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","source":"https://commons.wikimedia.org/wiki/File:Yokohama-New-Transit_Series2000-36.jpg"},{"id":"T151","name":"富士山麓電気鉄道8000系","group":"地方私鉄・路面電車・モノレール","file":"Fujikyu-Series8000.jpg","author":"","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Fujikyu-Series8000.jpg"},{"id":"T152","name":"富士山麓電気鉄道6000系","group":"地方私鉄・路面電車・モノレール","file":"Fujikyuko-Line_Series6000-6551_Mt.Fuji.jpg","author":"MaedaAkihiko","license":"","licenseUrl":"","source":"https://commons.wikimedia.org/wiki/File:Fujikyuko-Line_Series6000-6551_Mt.Fuji.jpg"},{"id":"T153","name":"広島電鉄5200形（グリーンムーバーAPEX）","group":"地方私鉄・路面電車・モノレール","file":"Hiroden_Series5200-5205B_Ekimae-route-HM.jpg","author":"MaedaAkihiko","license":"CC0 1.0","licenseUrl":"https://creativecommons.org/publicdomain/zero/1.0/","source":"https://commons.wikimedia.org/wiki/File:Hiroden_Series5200-5205B_Ekimae-route-HM.jpg"},{"id":"T154","name":"熊本市電0800形","group":"地方私鉄・路面電車・モノレール","file":"Kumamoto_City_Tram_0802_2015.jpg","author":"継之助","license":"CC BY-SA 4.0","licenseUrl":"https://creativecommons.org/licenses/by-sa/4.0/","source":"https://commons.wikimedia.org/wiki/File:Kumamoto_City_Tram_0802_2015.jpg"}];
+const TOTAL=TRAINS.length;
+const QUESTIONS_PER_ROUND=10;
+const STORE_KEY='densha_hakase_v3_collected';
+const SEEN_KEY='densha_hakase_v3_asked';
+const $=id=>document.getElementById(id);
+const screens=['startScreen','quizScreen','resultScreen'];
+let collected=new Set(readArray(STORE_KEY));
+let asked=new Set(readArray(SEEN_KEY));
+let chosenFiles=new Map();
+let objectUrls=[];
+let srcCache=new Map();
+let questions=[];
+let questionOptions=[];
+let photoPool=[];
+let position=0,score=0,newThisRound=0,answered=false,voiceOn=true,filter='all',busy=false;
+let audioContext=null;
+function readArray(key){try{const a=JSON.parse(localStorage.getItem(key)||'[]');return Array.isArray(a)?a:[]}catch{return[]}}
+function saveArray(key,items){try{localStorage.setItem(key,JSON.stringify([...items]))}catch{}}
+function showScreen(id){screens.forEach(x=>$(x).classList.toggle('hidden',x!==id));window.scrollTo({top:0,behavior:'instant'});}
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function childLabel(name){return name
+ .replace(/小田急/g,'おだきゅう').replace(/京急/g,'けいきゅう').replace(/京成/g,'けいせい')
+ .replace(/京王/g,'けいおう').replace(/東急/g,'とうきゅう').replace(/西武/g,'せいぶ')
+ .replace(/東武/g,'とうぶ').replace(/相鉄/g,'そうてつ').replace(/東京メトロ/g,'とうきょうメトロ')
+ .replace(/都営/g,'とえい').replace(/江ノ電/g,'えのでん').replace(/箱根登山鉄道/g,'はこねとざんてつどう')
+ .replace(/湘南モノレール/g,'しょうなんモノレール').replace(/千葉都市モノレール/g,'ちばモノレール')
+ .replace(/東京モノレール/g,'とうきょうモノレール').replace(/横浜シーサイドライン/g,'よこはまシーサイドライン')
+ .replace(/富士山麓電気鉄道/g,'ふじさんろくでんてつ').replace(/広島電鉄/g,'ひろでん')
+ .replace(/熊本市電/g,'くまもとしでん').replace(/横須賀線/g,'よこすかせん')
+ .replace(/山手線/g,'やまのてせん').replace(/中央線/g,'ちゅうおうせん')
+ .replace(/京浜東北線/g,'けいひんとうほくせん').replace(/京葉線/g,'けいようせん')
+ .replace(/東海道線/g,'とうかいどうせん').replace(/常磐線/g,'じょうばんせん')
+ .replace(/大阪環状線/g,'おおさかかんじょうせん').replace(/系/g,'けい').replace(/形/g,'がた');}
+function questionName(t){
+ // おなじ けいしきが なんしゅるいも あるときは ろせんめいも しつもんする。
+ const base=t.name.split(/[（(]/)[0].trim();
+ const count=TRAINS.filter(x=>x.name.split(/[（(]/)[0].trim()===base).length;
+ return count===1?base:t.name;
+}
+function setProgress(){const n=collected.size;const pct=100*n/TOTAL;
+ $('headerProgress').textContent=`📚 ${n} / ${TOTAL}`;
+ $('startTotal').textContent=`${n} / ${TOTAL}`;
+ $('startBar').style.width=pct+'%';
+ $('collectionTotal').textContent=`${n} / ${TOTAL}`;
+ $('collectionBar').style.width=pct+'%';}
+function getVoice(){if(!('speechSynthesis' in window))return null;
+ const voices=window.speechSynthesis.getVoices();
+ return voices.find(x=>x.lang.toLowerCase()==='ja-jp')||voices.find(x=>x.lang.toLowerCase().startsWith('ja'))||null;}
+function speak(text){if(!voiceOn||!('speechSynthesis' in window))return;
+ try{speechSynthesis.cancel();const utterance=new SpeechSynthesisUtterance(text);utterance.lang='ja-JP';utterance.rate=.87;utterance.pitch=1.08;utterance.volume=1;
+ const v=getVoice();if(v)utterance.voice=v;speechSynthesis.speak(utterance)}catch{}}
+function sound(ok){if(!voiceOn)return;try{
+ const A=window.AudioContext||window.webkitAudioContext;if(!A)return;
+ if(!audioContext)audioContext=new A();if(audioContext.state==='suspended')audioContext.resume();
+ const now=audioContext.currentTime;
+ const notes=ok?[{f:660,t:0},{f:880,t:.14},{f:1100,t:.29}]:[{f:310,t:0}];
+ notes.forEach(({f,t})=>{const osc=audioContext.createOscillator(),gain=audioContext.createGain();osc.type='sine';osc.frequency.value=f;
+ gain.gain.setValueAtTime(.0001,now+t);gain.gain.exponentialRampToValueAtTime(.12,now+t+.02);gain.gain.exponentialRampToValueAtTime(.001,now+t+.13);
+ osc.connect(gain);gain.connect(audioContext.destination);osc.start(now+t);osc.stop(now+t+.14);});}catch{}}
+function normalize(s){return s.normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9\u3040-\u30ff\u3400-\u9fff]/g,'');}
+function getSources(t){const urls=[];
+ const direct=chosenFiles.get(t.file)||chosenFiles.get(t.file.toLowerCase())||chosenFiles.get(normalize(t.file));
+ if(direct)urls.push(direct);
+ const safe=encodeURIComponent(t.file);
+ urls.push('images/'+safe,'./'+safe);
+ return [...new Set(urls)];}
+function verifyImage(url){return new Promise(resolve=>{const img=new Image();img.onload=()=>resolve(true);img.onerror=()=>resolve(false);img.src=url;});}
+async function getPhoto(t){if(srcCache.has(t.id))return srcCache.get(t.id);
+ for(const url of getSources(t)){if(await verifyImage(url)){srcCache.set(t.id,url);return url;}}
+ srcCache.set(t.id,null);return null;}
+function setStatus(message,kind=''){const e=$('assetStatus');e.textContent=message;e.className='status '+kind;}
+function makeQueue(){let unseen=shuffle(TRAINS.filter(t=>!collected.has(t.id)&&!asked.has(t.id)));
+ const uncollected=shuffle(TRAINS.filter(t=>!collected.has(t.id)&&asked.has(t.id)));
+ const owned=shuffle(TRAINS.filter(t=>collected.has(t.id)));
+ if(unseen.length<QUESTIONS_PER_ROUND){asked.clear();saveArray(SEEN_KEY,asked);}
+ return [...unseen,...uncollected,...owned];}
+async function startQuiz(){if(busy)return;busy=true;const button=$('startBtn');button.disabled=true;button.textContent='📷 しゃしんを さがしているよ…';
+ try{const ready=[];const queue=makeQueue();
+ // せいかいの しゃしん 10まい だけでなく、ほかの 2まいも じっさいに ひらけるか かくにんする。
+ const target=Math.min(TRAINS.length,40);
+ for(const t of queue){if(ready.length>=target)break;
+  const src=await getPhoto(t);if(src)ready.push({...t,src});}
+ if(ready.length<3){setStatus('しゃしんが 3まい みつかりません。JPGが はいった フォルダを えらんでください。','warning');return;}
+ photoPool=ready;
+ questions=ready.slice(0,Math.min(QUESTIONS_PER_ROUND,ready.length));
+ questionOptions=questions.map((t,i)=>optionsFor(t,i));
+ position=0;score=0;newThisRound=0;
+ for(const q of questions)asked.add(q.id);saveArray(SEEN_KEY,asked);
+ showScreen('quizScreen');renderQuestion();}
+ finally{busy=false;button.disabled=false;button.textContent='🚆 クイズ スタート！';}}
+function optionsFor(t,i){const level=i<3?1:i<7?2:3;
+ const others=photoPool.filter(x=>x.id!==t.id&&x.name!==t.name);
+ const same=shuffle(others.filter(x=>x.group===t.group));
+ const different=shuffle(others.filter(x=>x.group!==t.group));
+ const choices=level===1?[...different,...same]:level===2?[...same.slice(0,1),...different,...same.slice(1)]:[...same,...different];
+ const picked=[];
+ for(const x of choices){if(!picked.some(p=>p.id===x.id)){picked.push(x);}if(picked.length===2)break;}
+ return shuffle([t,...picked]);}
+function renderQuestion(){answered=false;const t=questions[position];
+ $('levelText').textContent=position<3?'⭐ レベル1・かんたん':position<7?'⭐⭐ レベル2・ふつう':'⭐⭐⭐ レベル3・ちょうせん';
+ $('questionCount').textContent=`${position+1} / ${questions.length}`;$('quizScore').textContent=`⭐ ${score}`;
+ $('quizBar').style.width=(100*position/questions.length)+'%';
+ $('questionText').textContent=`${questionName(t)}は どれかな？`;
+ $('feedback').replaceChildren();$('nextBtn').classList.add('hidden');
+ $('nextBtn').textContent=position===questions.length-1?'けっかを みる 🏅':'つぎの もんだい ➜';
+ $('questionCredit').replaceChildren();$('questionCredit').classList.add('hidden');
+ const box=$('choices');box.replaceChildren();
+ questionOptions[position].forEach((x,i)=>{const b=document.createElement('button');b.type='button';b.className='choice';b.dataset.id=x.id;
+  b.setAttribute('aria-label',`${i+1}ばんの しゃしん`);
+  const num=document.createElement('span');num.className='num';num.textContent=i+1;
+  const photo=document.createElement('span');photo.className='choice-image';
+  const img=document.createElement('img');img.src=x.src;img.alt='';img.decoding='async';photo.append(img);
+  const label=document.createElement('span');label.className='choice-name';label.textContent=childLabel(x.name);
+  b.append(num,photo,label);b.addEventListener('click',()=>answer(x.id,b));box.append(b);});
+ speakQuestion();}
+function speakQuestion(){const t=questions[position];if(!t)return;
+ if(answered){speak(`こたえは、${childLabel(t.name)} だよ。`);return;}
+ speak(`${childLabel(questionName(t))}は、どれかな？ しゃしんを、えらんでね！`);}
+function renderChoiceCredits(){const box=$('questionCredit');box.replaceChildren();
+ questionOptions[position].forEach((t,i)=>{const item=document.createElement('div');item.className='credit-entry';
+  item.append(document.createTextNode(`${i+1}ばん：${t.author||'さくしゃ みかくにん'} ／ ${t.license||'ライセンス みかくにん'}　`));
+  if(t.source){const a=document.createElement('a');a.href=t.source;a.target='_blank';a.rel='noopener noreferrer';a.textContent='しゃしんの しゅってん';item.append(a);}
+  box.append(item);});box.classList.remove('hidden');}
+function answer(id,button){if(answered)return;answered=true;const t=questions[position];const isCorrect=id===t.id;
+ const buttons=[...$('choices').querySelectorAll('button')];buttons.forEach((b,i)=>{
+  b.disabled=true;b.classList.add('revealed');
+  const x=questionOptions[position][i];b.setAttribute('aria-label',`${i+1}ばん ${x.name}`);
+  if(b.dataset.id===t.id)b.classList.add('correct');});
+ if(isCorrect){score++;if(!collected.has(t.id)){collected.add(t.id);newThisRound++;saveArray(STORE_KEY,collected);}
+  $('feedback').textContent='🎉 せいかい！ ずかんに とうろく！';sound(true);
+  speak('せいかい！すごい！ '+childLabel(t.name)+'。ずかんに とうろくしたよ！');}
+ else{button.classList.add('wrong');$('feedback').replaceChildren();
+  const main=document.createTextNode('🌱 おしい！');const sub=document.createElement('small');sub.textContent='こたえ：'+childLabel(t.name);
+  $('feedback').append(main,sub);sound(false);speak('おしい！ こたえは、'+childLabel(t.name)+'だよ。');}
+ renderChoiceCredits();
+ $('quizScore').textContent=`⭐ ${score}`;$('nextBtn').classList.remove('hidden');setProgress();}
+function nextQuestion(){if(!answered)return;position++;if(position>=questions.length){finishQuiz();return;}renderQuestion();}
+function finishQuiz(){if('speechSynthesis' in window)speechSynthesis.cancel();showScreen('resultScreen');
+ const len=questions.length;
+ $('resultScore').textContent=`${len}もんちゅう ${score}もん せいかい！`;
+ const rank=score>=len*.9?'でんしゃ はかせ！':score>=len*.6?'でんしゃ めいじん！':score>=len*.3?'でんしゃ ものしり！':'でんしゃ たんけんたい！';
+ $('resultRank').textContent='✨ '+rank+' ✨';$('resultIcon').textContent=score>=len*.9?'🏆':score>=len*.6?'🥇':'🚆';
+ $('unlockedThisRound').textContent=`📚 あたらしく ${newThisRound}しゅるい ずかんに ふえたよ！`;
+ setProgress();renderCollection();
+ if(collected.size===TOTAL)speak('おめでとう！でんしゃ ずかん 150しゅるい ぜんぶ そろったよ！');
+ else speak(`${len}もんちゅう、${score}もん、せいかい！ ${rank}。あたらしく ${newThisRound}しゅるい、ずかんに ふえたよ！`);}
+function renderCollection(){const box=$('collection');box.replaceChildren();
+ const items=TRAINS.filter(t=>filter==='all'||(filter==='owned'?collected.has(t.id):!collected.has(t.id)));
+ if(!items.length){const e=document.createElement('div');e.className='empty';e.textContent=filter==='owned'?'まだ あつめた でんしゃが ないよ。クイズに ちょうせん！':'ぜんぶ あつまったよ！ おめでとう！';box.append(e);return;}
+ items.forEach(t=>{const acquired=collected.has(t.id);const card=document.createElement('div');card.className='train-card'+(acquired?'':' locked');
+ const photo=document.createElement('div');photo.className='card-photo';
+ if(acquired){const image=document.createElement('img');image.alt=childLabel(t.name);image.loading='lazy';const src=srcCache.get(t.id)||getSources(t)[0];image.src=src;
+  image.onerror=()=>{image.remove();const fallback=document.createElement('span');fallback.textContent='📷';fallback.className='card-locked';photo.append(fallback);};photo.append(image);}
+ else{const blank=document.createElement('span');blank.className='card-locked';blank.textContent='🚈';photo.append(blank);}
+ const id=document.createElement('div');id.className='card-id';id.textContent='No. '+String(TRAINS.indexOf(t)+1).padStart(3,'0');
+ const name=document.createElement('div');name.className='card-name';name.textContent=acquired?childLabel(t.name):'？？？';
+ card.append(photo,id,name);
+ if(acquired){const credit=document.createElement('div');credit.className='card-credit';
+ credit.textContent=(t.author||'さくしゃ：みかくにん')+' / '+(t.license||'ライセンス：みかくにん');
+ if(t.source){credit.append(document.createElement('br'));const link=document.createElement('a');link.href=t.source;link.target='_blank';link.rel='noopener noreferrer';link.textContent='しゃしんの しゅってん';credit.append(link);}
+ card.append(credit);}
+ box.append(card);});}
+function switchFilter(value){filter=value;document.querySelectorAll('.filter').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.filter===filter)));renderCollection();}
+function setFolder(files){for(const url of objectUrls)URL.revokeObjectURL(url);objectUrls=[];chosenFiles.clear();srcCache.clear();
+ const jpgs=[...files].filter(f=>/\.jpe?g$/i.test(f.name));
+ let count=0;
+ for(const f of jpgs){const url=URL.createObjectURL(f);objectUrls.push(url);
+  chosenFiles.set(f.name,url);chosenFiles.set(f.name.toLowerCase(),url);chosenFiles.set(normalize(f.name),url);}
+ for(const t of TRAINS){if(chosenFiles.has(t.file)||chosenFiles.has(t.file.toLowerCase())||chosenFiles.has(normalize(t.file)))count++;}
+ if(count>=3)setStatus(`✅ しゃしんを ${count} / ${TOTAL} まい みつけたよ！`,'good');
+ else setStatus(`⚠️ リストと おなじ なまえの しゃしんは ${count} まいでした。ファイル名を かくにんしてね。`,'warning');}
+$('startBtn').addEventListener('click',startQuiz);
+$('chooseFolderBtn').addEventListener('click',()=>$('folderInput').click());
+$('folderInput').addEventListener('change',e=>{if(e.target.files?.length)setFolder(e.target.files);});
+$('replayBtn').addEventListener('click',speakQuestion);
+$('nextBtn').addEventListener('click',nextQuestion);
+$('againBtn').addEventListener('click',startQuiz);
+$('goCollectionBtn').addEventListener('click',()=>$('collectionArea').scrollIntoView({behavior:'smooth',block:'start'}));
+$('voiceToggle').addEventListener('click',()=>{voiceOn=!voiceOn;const b=$('voiceToggle');b.textContent=voiceOn?'🔊 こえ ON':'🔇 こえ OFF';b.setAttribute('aria-pressed',String(voiceOn));if(!voiceOn&&'speechSynthesis' in window)speechSynthesis.cancel();else if(questions.length&&(!$('quizScreen').classList.contains('hidden')))speakQuestion();});
+document.querySelectorAll('.filter').forEach(b=>b.addEventListener('click',()=>switchFilter(b.dataset.filter)));
+$('resetBtn').addEventListener('click',()=>{if(!confirm('ずかんに あつめた でんしゃを ぜんぶ けしますか？'))return;collected.clear();asked.clear();saveArray(STORE_KEY,collected);saveArray(SEEN_KEY,asked);setProgress();renderCollection();});
+setProgress();
+</script>
+</body>
+</html>
