@@ -4,7 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#dff4ff">
-<title>でんしゃ はかせ！｜しゃしんクイズとずかん</title>
+<title>でんしゃ はかせ！｜150しゅるいの しゃしん3たくクイズ</title>
+<meta name="description" content="しゃしんを見て、でんしゃの名前をあてよう！音声つきの3たくクイズ。正解すると図鑑に登録！150種類の電車をぜんぶ集めて、でんしゃはかせをめざそう。">
+<!-- LINEなどでURLをシェアしたときに表示する内容 -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ja_JP">
+<meta property="og:site_name" content="でんしゃ はかせ！">
+<meta property="og:title" content="🚆 でんしゃ はかせ！｜しゃしん3たくクイズ">
+<meta property="og:description" content="このでんしゃはどれかな？音声を聞いて写真を選ぼう！正解すると図鑑に登録。150種類の電車をぜんぶ集めて、でんしゃはかせをめざそう！">
+<meta property="og:url" content="https://todachihiro.github.io/densha-hakase/">
+<meta property="og:image" content="https://todachihiro.github.io/densha-hakase/images/Shinkansen_Series_E5.jpg">
+<meta property="og:image:alt" content="でんしゃ はかせ！に登場する新幹線の写真">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="🚆 でんしゃ はかせ！｜しゃしん3たくクイズ">
+<meta name="twitter:description" content="音声を聞いて写真を選ぼう！正解すると図鑑に登録。150種類の電車を集めよう！">
+<meta name="twitter:image" content="https://todachihiro.github.io/densha-hakase/images/Shinkansen_Series_E5.jpg">
 <style>
 :root{--ink:#263650;--blue:#2e72c9;--sky:#dff4ff;--yellow:#ffd560;--orange:#fcb26e;--green:#36b888;--red:#ee6f79;--line:#dce9f3;--paper:#fffdfa;--round:28px}
 *{box-sizing:border-box}
@@ -203,10 +217,25 @@ function childLabel(name){return name
  .replace(/京浜東北線/g,'けいひんとうほくせん').replace(/京葉線/g,'けいようせん')
  .replace(/東海道線/g,'とうかいどうせん').replace(/常磐線/g,'じょうばんせん')
  .replace(/大阪環状線/g,'おおさかかんじょうせん').replace(/系/g,'けい').replace(/形/g,'がた');}
+function splitTrainName(name){
+ const m=name.match(/^(.+?)[（(](.+?)[）)]$/);
+ if(!m)return {base:name.trim(), extra:""};
+ return {base:m[1].trim(), extra:m[2].trim()};
+}
+function isNickname(extra){
+ if(!extra)return false;
+ // ろせんめい・せつめい だけの ものは あいしょう あつかいに しない
+ return !/(線|ライン|房総特急|JR西日本|Haneda|Airport|Batch|For )/i.test(extra);
+}
 function questionName(t){
- // おなじ けいしきが なんしゅるいも あるときは ろせんめいも しつもんする。
- const base=t.name.split(/[（(]/)[0].trim();
- const count=TRAINS.filter(x=>x.name.split(/[（(]/)[0].trim()===base).length;
+ const {base,extra}=splitTrainName(t.name);
+ if(isNickname(extra)){
+  // 「（踊り子旧型）」などは愛称だけを読み、型式で区別する。
+  const nickname=extra.replace(/旧型/g,'').split(/[・／/,、]/)[0].trim();
+  return `${nickname}（${base}）`;
+ }
+ // おなじ けいしきが なんしゅるいも あるときは、なまえを くわしくする。
+ const count=TRAINS.filter(x=>splitTrainName(x.name).base===base).length;
  return count===1?base:t.name;
 }
 function setProgress(){const n=collected.size;const pct=100*n/TOTAL;
