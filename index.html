@@ -123,6 +123,10 @@ p{line-height:1.7}
   .choices.photo-choices .choice-image{height:clamp(122px,18vw,185px)}
   .choices.photo-choices .choice-name{font-size:clamp(13px,1.8vw,17px)}
 }
+.offline-steps{margin:12px 0;padding-left:1.7em;line-height:1.7;font-size:14px;font-weight:800;color:#304760}
+.offline-steps li{padding:2px 0 6px}
+.offline-steps li::marker{color:#246eaf;font-weight:1000}
+.offline-steps strong{color:#185c97}
 </style>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -145,12 +149,19 @@ p{line-height:1.7}
   <div class="subactions"><button type="button" class="secondary" id="chooseFolderBtn">📁 しゃしんフォルダを えらぶ</button></div>
   <input id="folderInput" type="file" webkitdirectory directory multiple accept="image/jpeg,.jpg,.jpeg" class="hidden">
   <div style="margin:17px auto 0;max-width:560px;background:#eef8ff;border:2px solid #c8e1f4;border-radius:18px;padding:14px;text-align:left">
-  <b>📲 でんしゃの なかでも あそぼう！</b>
-  <p class="note" style="margin:6px 0 10px">さいしょに ネットに つないで、しゃしんを ぜんぶ ほぞんしてね。</p>
-  <button type="button" class="secondary" id="offlineBtn" disabled>⬇️ オフラインの じゅんび</button>
+  <b style="display:block;font-size:18px">📲 ネットなしで あそぶには？</b>
+  <ol class="offline-steps">
+    <li>ネットに つないで このページを ひらこう！</li>
+    <li><strong>「ホームがめんに ついか」</strong> してね！</li>
+    <li><strong>ホームがめんの アイコンから ひらきなおそう！</strong></li>
+    <li>その アプリで <strong>「オフラインの じゅんび」</strong> を おして、しゃしん150まいを ほぞんしよう！</li>
+    <li><strong>「じゅんびが できたよ！」</strong> で かんりょう！ 🎉</li>
+  </ol>
+  <p class="note" style="margin:8px 0 12px">⚠️ Safariの がめんではなく、<strong>ホームがめんの アイコンから</strong> ほぞんしてね。</p>
+  <button type="button" class="secondary" id="offlineBtn" disabled>⬇️ オフラインの じゅんび（150まい）</button>
   <div id="offlineStatus" class="status" role="status" aria-live="polite" style="margin:9px 0 0">じゅんびを かくにんしています…</div>
   <div class="progress" style="margin-top:9px"><div id="offlineBar" style="width:0%"></div></div>
-  <details class="note" style="margin-top:10px"><summary>ホームがめんに ついかするには</summary>iPhone：Safariの共有メニューから「ホーム画面に追加」。Android：Chromeのメニューから「ホーム画面に追加」または「アプリをインストール」。追加したアプリを開き、150枚の保存が完了したことを確認してください。端末によってオフラインで音声が出ない場合があります。</details>
+  <details class="note" style="margin-top:12px"><summary>📱 ホームがめんに ついかする ほうほう</summary><p style="margin:8px 0 5px"><strong>iPhone・iPad：</strong>Safariの「きょうゆう」→「ホームがめんに ついか」。</p><p style="margin:0 0 5px"><strong>Android：</strong>Chromeのメニュー「︙」→「ホームがめんに ついか」または「アプリを インストール」。</p><p style="margin:0">※ オフラインでは、たんまつによって こえが でないことが あります。</p></details>
 </div>
 <p class="note" style="margin:12px auto 0">「images」フォルダの しゃしんは じどうで つかえます。<br>べつの ばしょに あるときは、フォルダを えらんでください。</p>
   <div id="assetStatus" class="status" role="status">📷 しゃしんリスト：150しゅるい</div>
