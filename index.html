@@ -272,7 +272,7 @@ function sound(ok){if(!voiceOn)return;try{
  osc.connect(gain);gain.connect(audioContext.destination);osc.start(now+t);osc.stop(now+t+.14);});}catch{}}
 function normalize(s){return s.normalize('NFKD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9\u3040-\u30ff\u3400-\u9fff]/g,'');}
 const PHOTO_CACHE='densha-hakase-light-20261122-photos';
-const APP_CACHE='densha-hakase-light-20261122-app';
+const APP_CACHE='densha-hakase-light-20261123-app';
 function photoURL(t){return new URL('images/'+encodeURIComponent(t.file)+'?v=light1',location.href).href;}
 function getSources(t){const urls=[];
  const direct=chosenFiles.get(t.file)||chosenFiles.get(t.file.toLowerCase())||chosenFiles.get(normalize(t.file));
@@ -408,7 +408,7 @@ async function checkOffline(){
  const shell=await caches.open(APP_CACHE);const shellOK=await shell.match(new URL('./index.html',location.href).href);
  offlineProgress(n);$('offlineBtn').disabled=false;
  if(n===TOTAL&&shellOK){offlineMessage('✅ オフラインの じゅんびが できたよ！ '+n+' / '+TOTAL+' まい','good');$('offlineBtn').textContent='🔄 ほぞんを かくにん';}
- else offlineMessage('しゃしんの ほぞん：'+n+' / '+TOTAL+' まい');
+ else offlineMessage(!shellOK?'⚠️ アプリの ほぞんを かくにんできません。オンラインで ひらきなおしてね。':'しゃしんの ほぞん：'+n+' / '+TOTAL+' まい',shellOK?'':'warning');
 }
 async function prepareOffline(){
  if(offlineWorking)return;offlineWorking=true;$('offlineBtn').disabled=true;

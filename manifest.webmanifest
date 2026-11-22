@@ -3,7 +3,7 @@
   "name": "でんしゃ はかせ！",
   "short_name": "でんしゃはかせ",
   "lang": "ja",
-  "start_url": "./",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "background_color": "#dff4ff",
